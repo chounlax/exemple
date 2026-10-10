@@ -1,0 +1,83 @@
+# Teste le site, l'exporte en HTML statique et le publie sur GitHub Pages.
+# Prérequis : Settings > Pages > Build and deployment > Source = "GitHub Actions".
+name: Site sur GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: intl
+          tools: composer
+
+      - name: Dépendances
+        run: composer install --no-interaction --no-progress
+
+      - name: Contrôles qualité
+        run: |
+          php bin/console lint:container
+          php bin/console lint:twig templates/
+          php bin/console lint:yaml config/ --parse-tags
+          vendor/bin/php-cs-fixer check
+          vendor/bin/phpstan analyse --no-progress
+          php bin/phpunit
+
+  build:
+    needs: tests
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: prod
+      APP_DEBUG: '0'
+      APP_SECRET: ${{ github.sha }}
+      STATIC_SITE: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: intl
+          tools: composer
+
+      - name: Dépendances de production
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Export HTML statique
+        run: |
+          php bin/console asset-map:compile
+          APP_RUNTIME_MODE=web=1 php bin/console app:export-static "${{ steps.pages.outputs.base_url }}" --output=build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

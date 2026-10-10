@@ -28,6 +28,15 @@
             </div>
 
             <div class="contact__form">
+            {% if form is null %}
+                {# Site statique (GitHub Pages) : pas de serveur pour envoyer le formulaire. #}
+                <h2 class="contact__title">Écrivez-moi</h2>
+                <p>Indiquez dans votre message le type de prestation, la date et le lieu envisagés, et ce qui compte pour vous.</p>
+                <p>
+                    <a class="button" href="mailto:{{ site.email }}?subject={{ ('Demande de devis – ' ~ site.title)|url_encode }}&amp;body={{ "Bonjour,\n\nPrestation :\nDate souhaitée :\nLieu :\n\nMon projet :\n"|url_encode }}">Envoyer un email</a>
+                </p>
+                <p class="form__note">Ou appelez-moi au <a href="tel:{{ site.phone|replace({' ': ''}) }}">{{ site.phone }}</a>.</p>
+            {% else %}
                 {% for type, messages in app.flashes(['success', 'error']) %}
                     {% for message in messages %}
                         <p class="alert alert--{{ type }}" role="{{ type == 'error' ? 'alert' : 'status' }}">{{ message }}</p>
@@ -46,6 +55,7 @@
                     <p class="form__note">Vos informations servent uniquement à répondre à votre demande. <a href="{{ path('app_legal') }}#confidentialite">En savoir plus</a>.</p>
                     <button class="button" type="submit">Envoyer ma demande</button>
                 {{ form_end(form) }}
+            {% endif %}
             </div>
         </div>
     </section>

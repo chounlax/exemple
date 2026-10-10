@@ -36,3 +36,15 @@ PHPStan niveau 6 + extension Symfony (`phpstan.dist.neon`), PHP-CS-Fixer règles
 - Adresses du formulaire de contact : `CONTACT_FROM` / `CONTACT_TO` dans `.env.local`.
 - Serveur local : `symfony serve -d` (port 8003 sur cette machine, les ports 8000-8002
   sont pris par d'autres projets).
+
+## Mise en ligne (GitHub Pages)
+
+GitHub Pages ne fait pas tourner PHP : `.github/workflows/pages.yml` teste le projet,
+exporte le site en HTML statique (`app:export-static`, service
+`src/StaticSite/StaticSiteExporter.php`) et le publie à chaque push sur `main`.
+Avec `STATIC_SITE=1`, la page contact affiche un lien email au lieu du formulaire.
+Toute nouvelle page publique doit être ajoutée à `StaticSiteExporter::paths()`.
+
+Export local (ne pas laisser `public/assets/` ensuite, le serveur de dev le servirait) :
+`APP_ENV=prod STATIC_SITE=1 php bin/console asset-map:compile` puis
+`APP_ENV=prod STATIC_SITE=1 APP_RUNTIME_MODE=web=1 php bin/console app:export-static https://chounlax.github.io/exemple`.

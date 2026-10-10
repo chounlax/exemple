@@ -27,3 +27,7 @@
 ###> phpstan ###
 /phpstan.neon
 ###< phpstan ###
+
+###> export statique ###
+/build/
+###< export statique ###

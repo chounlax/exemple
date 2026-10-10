@@ -6,6 +6,7 @@ use App\Contact\ContactMailer;
 use App\Contact\ContactRequest;
 use App\Form\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,14 @@ final class ContactController extends AbstractController
         ContactMailer $mailer,
         #[Target('contact_form')]
         RateLimiterFactoryInterface $contactFormLimiter,
+        #[Autowire('%env(bool:STATIC_SITE)%')]
+        bool $staticSite,
     ): Response {
+        // Site statique (GitHub Pages) : pas de serveur pour traiter le formulaire.
+        if ($staticSite) {
+            return $this->render('contact/index.html.twig', ['form' => null]);
+        }
+
         $contact = new ContactRequest();
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);

@@ -1,6 +1,7 @@
 twig:
     file_name_pattern: '*.twig'
     globals:
+        static_site: '%env(bool:STATIC_SITE)%'
         # Informations du photographe, à personnaliser.
         site:
             name: 'Camille Laurent'
