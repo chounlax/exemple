@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'À propos' %}
+{% block meta_description %}{{ site.name }}, photographe à {{ site.city }} : mon parcours, ma façon de travailler et ce qui m'anime.{% endblock %}
+
+{% block body %}
+    <section class="section">
+        <div class="container about">
+            {{ include('components/_photo.html.twig', {
+                photo: {label: 'Photo 1', alt: 'Portrait de ' ~ site.name, width: 2400, height: 3000, color: '#8e6a5f'},
+                class: 'about__portrait',
+            }) }}
+            <div class="about__text prose">
+                <p class="eyebrow">À propos</p>
+                <h1 class="page-head__title">Bonjour, je suis {{ site.name }}.</h1>
+                <p class="lead">Photographe à {{ site.city }} depuis plus de dix ans, je photographie les mariages, les personnes et les entreprises.</p>
+                <p>J'aime les images qui racontent quelque chose : un regard échangé, un geste spontané, la lumière d'une fin de journée. Mon travail est d'être là au bon moment, sans me faire remarquer, et de vous livrer des photos que vous aurez plaisir à regarder dans vingt ans.</p>
+                <p>Je me déplace à {{ site.city }} et dans toute la région, et partout en France pour les mariages.</p>
+
+                <h2>Ce que vous pouvez attendre</h2>
+                <ul>
+                    <li>Un devis clair sous 48 heures, sans frais cachés.</li>
+                    <li>Un échange avant la séance pour préparer le déroulé.</li>
+                    <li>Des photos retouchées une par une, livrées en haute définition.</li>
+                    <li>Une galerie en ligne privée pour partager vos images.</li>
+                </ul>
+
+                <p><a class="button" href="{{ path('app_contact') }}">Me contacter</a></p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Page introuvable' %}
+
+{% block body %}
+    <section class="section error-page">
+        <div class="container prose">
+            <p class="eyebrow">Erreur 404</p>
+            <h1 class="page-head__title">Cette page n'existe pas (ou plus).</h1>
+            <p class="lead">Le lien est peut-être ancien, ou l'adresse contient une faute de frappe.</p>
+            <p>
+                <a class="button" href="{{ path('app_gallery_index') }}">Voir les galeries</a>
+                <a class="button button--outline" href="{{ path('app_home') }}">Retour à l'accueil</a>
+            </p>
+        </div>
+    </section>
+{% endblock %}

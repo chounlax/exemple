@@ -1,24 +1,85 @@
+{% set route = app.request.attributes.get('_route') %}
+{% set page_title = block('title') is defined and block('title') is not empty ? block('title') ~ ' | ' ~ site.title : site.title ~ ' – ' ~ site.tagline %}
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
-
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{ page_title }}</title>
+        <meta name="description" content="{% block meta_description %}{{ site.tagline }} à {{ site.city }}. Reportages naturels et images soignées.{% endblock %}">
+        {% if route %}
+            <link rel="canonical" href="{{ url(route, app.request.attributes.get('_route_params')) }}">
+            <meta property="og:url" content="{{ url(route, app.request.attributes.get('_route_params')) }}">
+        {% endif %}
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="{{ site.title }}">
+        <meta property="og:title" content="{{ page_title }}">
+        <meta property="og:description" content="{{ block('meta_description') }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="theme-color" content="#f7f5f2">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%231d1b19%22/><circle cx=%2232%22 cy=%2232%22 r=%2214%22 fill=%22none%22 stroke=%22%23f7f5f2%22 stroke-width=%225%22/></svg>">
+        {% block stylesheets %}{% endblock %}
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
-
-        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphp_hot_reload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
+        {% block structured_data %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+        <header class="site-header{% block header_class %}{% endblock %}" data-controller="nav">
+            <div class="container site-header__inner">
+                <a class="brand" href="{{ path('app_home') }}">
+                    <span class="brand__name">{{ site.name }}</span>
+                    <span class="brand__tag">Photographie</span>
+                </a>
+
+                <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" data-nav-target="toggle" data-action="nav#toggle">
+                    <span class="nav-toggle__bar" aria-hidden="true"></span>
+                    <span class="visually-hidden">Menu</span>
+                </button>
+
+                <nav class="site-nav" id="menu-principal" aria-label="Menu principal" data-nav-target="menu">
+                    <ul>
+                        <li><a href="{{ path('app_home') }}" {% if route == 'app_home' %}aria-current="page"{% endif %}>Accueil</a></li>
+                        <li><a href="{{ path('app_gallery_index') }}" {% if route starts with 'app_gallery' %}aria-current="page"{% endif %}>Galeries</a></li>
+                        <li><a href="{{ path('app_about') }}" {% if route == 'app_about' %}aria-current="page"{% endif %}>À propos</a></li>
+                        <li><a class="button button--small" href="{{ path('app_contact') }}" {% if route == 'app_contact' %}aria-current="page"{% endif %}>Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main id="contenu">
+            {% block body %}{% endblock %}
+        </main>
+
+        <footer class="site-footer">
+            <div class="container site-footer__inner">
+                <div>
+                    <p class="site-footer__name">{{ site.title }}</p>
+                    <p class="site-footer__muted">{{ site.tagline }}<br>{{ site.area }}</p>
+                </div>
+                <div>
+                    <p class="site-footer__heading">Contact</p>
+                    <p>
+                        <a href="mailto:{{ site.email }}">{{ site.email }}</a><br>
+                        <a href="tel:{{ site.phone|replace({' ': ''}) }}">{{ site.phone }}</a><br>
+                        <a href="{{ site.instagram }}" rel="noopener">Instagram</a>
+                    </p>
+                </div>
+                <div>
+                    <p class="site-footer__heading">Navigation</p>
+                    <p>
+                        <a href="{{ path('app_gallery_index') }}">Galeries</a><br>
+                        <a href="{{ path('app_about') }}">À propos</a><br>
+                        <a href="{{ path('app_legal') }}">Mentions légales</a>
+                    </p>
+                </div>
+            </div>
+            <div class="container site-footer__bottom">
+                <p>© {{ 'now'|date('Y') }} {{ site.name }}. Toutes les photos sont protégées par le droit d'auteur.</p>
+            </div>
+        </footer>
     </body>
 </html>

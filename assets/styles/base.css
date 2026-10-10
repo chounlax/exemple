@@ -1,0 +1,240 @@
+/* Variables, base typographique, boutons et utilitaires. */
+
+:root {
+    --color-bg: #f7f5f2;
+    --color-surface: #ffffff;
+    --color-alt: #efebe6;
+    --color-text: #1d1b19;
+    --color-muted: #6b645c;
+    --color-line: #e0dad2;
+    --color-accent: #8a5a3c;
+    --color-dark: #1d1b19;
+    --color-footer: #141311;
+    --color-success: #2f6b46;
+    --color-error: #a33a2c;
+
+    --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2.5rem;
+    --space-5: 4rem;
+    --space-6: 6rem;
+
+    --container: 1240px;
+    --gutter: clamp(1rem, 4vw, 2.5rem);
+    --radius: 4px;
+    --header-height: 76px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/*
+ * Le fond de html prend la couleur du pied de page : ce qui dépasse sous la page
+ * (barre de debug en dev, rebond du défilement) ne fait plus de bande claire.
+ * Le rebond est en plus désactivé, pour ne jamais découvrir le fond au défilement.
+ */
+html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    background: var(--color-footer);
+    overscroll-behavior-y: none;
+}
+
+body {
+    overscroll-behavior-y: none;
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Le fond clair est sur le contenu, pas sur body (voir html ci-dessus). */
+main {
+    display: block;
+    background: var(--color-bg);
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 1.15;
+    margin: 0 0 var(--space-2);
+    letter-spacing: -0.01em;
+}
+
+p,
+ul,
+ol,
+dl {
+    margin: 0 0 var(--space-2);
+}
+
+a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+}
+
+a:hover {
+    color: var(--color-accent);
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+.container {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+.eyebrow {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--space-1);
+}
+
+.eyebrow--light {
+    color: rgb(255 255 255 / 0.85);
+}
+
+.lead {
+    font-size: 1.2rem;
+    color: var(--color-muted);
+}
+
+.prose {
+    max-width: 68ch;
+}
+
+.prose h2 {
+    font-size: 1.6rem;
+    margin-top: var(--space-4);
+}
+
+.prose ul {
+    padding-left: 1.2em;
+}
+
+.prose li + li {
+    margin-top: 0.35em;
+}
+
+/* Boutons */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    min-height: 48px;
+    padding: 0.75em 1.6em;
+    border: 1px solid var(--color-dark);
+    border-radius: var(--radius);
+    background: var(--color-dark);
+    color: #fff;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.button:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+}
+
+.button--small {
+    min-height: 40px;
+    padding: 0.45em 1.2em;
+}
+
+.button--outline {
+    background: transparent;
+    color: var(--color-dark);
+}
+
+.button--light {
+    background: #fff;
+    border-color: #fff;
+    color: var(--color-dark);
+}
+
+.button--light:hover {
+    background: var(--color-bg);
+    border-color: var(--color-bg);
+    color: var(--color-dark);
+}
+
+.button--ghost {
+    background: transparent;
+    border-color: rgb(255 255 255 / 0.7);
+    color: #fff;
+}
+
+.button--ghost:hover {
+    background: rgb(255 255 255 / 0.12);
+    border-color: #fff;
+}
+
+/* Accessibilité */
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: var(--space-2);
+    z-index: 100;
+    padding: 0.6em 1em;
+    background: var(--color-dark);
+    color: #fff;
+}
+
+.skip-link:focus {
+    top: var(--space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}

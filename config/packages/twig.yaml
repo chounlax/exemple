@@ -1,5 +1,16 @@
 twig:
     file_name_pattern: '*.twig'
+    globals:
+        # Informations du photographe, à personnaliser.
+        site:
+            name: 'Camille Laurent'
+            title: 'Camille Laurent Photographie'
+            tagline: 'Photographe de mariage, portrait et entreprise'
+            city: 'Lyon'
+            area: 'Lyon et toute la région Auvergne-Rhône-Alpes'
+            email: 'contact@example.com'
+            phone: '06 00 00 00 00'
+            instagram: 'https://www.instagram.com/'
 
 when@test:
     twig:

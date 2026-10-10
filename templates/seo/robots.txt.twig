@@ -1,0 +1,8 @@
+User-agent: *
+{% if allow_indexing %}
+Allow: /
+
+Sitemap: {{ url('app_sitemap') }}
+{% else %}
+Disallow: /
+{% endif %}

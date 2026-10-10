@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Erreur' %}
+
+{% block body %}
+    <section class="section error-page">
+        <div class="container prose">
+            <p class="eyebrow">Erreur {{ status_code }}</p>
+            <h1 class="page-head__title">Un problème est survenu.</h1>
+            <p class="lead">Le site rencontre une difficulté. Réessayez dans quelques instants, ou écrivez-moi directement à <a href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
+            <p><a class="button" href="{{ path('app_home') }}">Retour à l'accueil</a></p>
+        </div>
+    </section>
+{% endblock %}

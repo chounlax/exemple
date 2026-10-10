@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Mentions légales' %}
+{% block meta_description %}Mentions légales et politique de confidentialité du site {{ site.title }}.{% endblock %}
+
+{% block body %}
+    <header class="page-head">
+        <div class="container">
+            <h1 class="page-head__title">Mentions légales</h1>
+        </div>
+    </header>
+
+    <section class="section section--tight">
+        <div class="container prose">
+            {# Les informations entre crochets doivent être complétées avant la mise en ligne. #}
+            <h2>Éditeur du site</h2>
+            <p>
+                {{ site.name }}, photographe – [statut juridique, ex. : entrepreneur individuel]<br>
+                SIRET : [à compléter]<br>
+                Adresse : [à compléter], {{ site.city }}<br>
+                Email : <a href="mailto:{{ site.email }}">{{ site.email }}</a> – Téléphone : {{ site.phone }}
+            </p>
+            <p>Directeur de la publication : {{ site.name }}.</p>
+
+            <h2>Hébergement</h2>
+            <p>[Nom de l'hébergeur, adresse, téléphone – à compléter.]</p>
+
+            <h2>Propriété intellectuelle</h2>
+            <p>L'ensemble des photographies présentées sur ce site sont la propriété exclusive de {{ site.name }} et sont protégées par le droit d'auteur. Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.</p>
+
+            <h2 id="confidentialite">Données personnelles</h2>
+            <p>Les informations envoyées par le formulaire de contact (nom, email, prestation, date, message) servent uniquement à répondre à votre demande. Elles sont transmises par email à {{ site.name }} et ne sont ni enregistrées sur le site, ni cédées à des tiers.</p>
+            <p>Les échanges sont conservés le temps nécessaire au traitement de votre demande, et au plus trois ans après le dernier contact. Vous pouvez demander l'accès, la rectification ou la suppression de vos données en écrivant à <a href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
+
+            <h2>Cookies</h2>
+            <p>Ce site n'utilise aucun cookie de mesure d'audience ni de publicité. Seul un cookie technique peut être déposé lors de l'envoi du formulaire, pour le protéger contre les envois frauduleux.</p>
+        </div>
+    </section>
+{% endblock %}

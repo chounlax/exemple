@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Galeries' %}
+{% block meta_description %}Galeries photo de {{ site.name }} : mariages, portraits, entreprises et paysages à {{ site.city }} et en région.{% endblock %}
+
+{% block body %}
+    <header class="page-head">
+        <div class="container">
+            <p class="eyebrow">Portfolio</p>
+            <h1 class="page-head__title">Galeries</h1>
+            <p class="page-head__lead">Mariages, portraits, entreprises et travail personnel. Cliquez sur une galerie pour la découvrir en entier.</p>
+        </div>
+    </header>
+
+    <section class="section section--tight">
+        <div class="container">
+            <div class="cards">
+                {% for gallery in galleries %}
+                    {{ include('components/_gallery_card.html.twig', {gallery: gallery}) }}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    {{ include('components/_cta.html.twig') }}
+{% endblock %}

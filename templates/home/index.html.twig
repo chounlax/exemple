@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title '' %}
+
+{% block header_class ' site-header--overlay' %}
+
+{% block structured_data %}
+    <script type="application/ld+json">
+        {{ {
+            '@context': 'https://schema.org',
+            '@type': 'ProfessionalService',
+            'name': site.title,
+            'description': site.tagline,
+            'url': url('app_home'),
+            'email': site.email,
+            'telephone': site.phone,
+            'areaServed': site.area,
+            'address': {'@type': 'PostalAddress', 'addressLocality': site.city, 'addressCountry': 'FR'},
+            'sameAs': [site.instagram],
+            'founder': {'@type': 'Person', 'name': site.name, 'jobTitle': 'Photographe'},
+        }|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE'))|raw }}
+    </script>
+{% endblock %}
+
+{% block body %}
+    <section class="hero">
+        {{ include('components/_photo.html.twig', {photo: (galleries|first).cover, class: 'photo--hero'}) }}
+        <div class="container hero__content">
+            <p class="eyebrow eyebrow--light">{{ site.name }} · {{ site.city }}</p>
+            <h1 class="hero__title">Des images vraies, pour les moments qui comptent.</h1>
+            <p class="hero__text">{{ site.tagline }}.</p>
+            <div class="hero__actions">
+                <a class="button button--light" href="{{ path('app_gallery_index') }}">Voir les galeries</a>
+                <a class="button button--ghost" href="{{ path('app_contact') }}">Me contacter</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section__head">
+                <p class="eyebrow">Portfolio</p>
+                <h2 class="section__title">Galeries</h2>
+                <p class="section__lead">Une sélection de mes reportages et séances récentes.</p>
+            </div>
+            <div class="cards">
+                {% for gallery in galleries %}
+                    {{ include('components/_gallery_card.html.twig', {gallery: gallery, heading: 'h3'}) }}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="section section--alt">
+        <div class="container">
+            <div class="section__head">
+                <p class="eyebrow">Mon approche</p>
+                <h2 class="section__title">Comment je travaille</h2>
+            </div>
+            <ol class="steps">
+                <li class="step">
+                    <h3 class="step__title">On se rencontre</h3>
+                    <p>Un appel ou un café pour comprendre votre projet, vos envies et vos contraintes. Le devis suit sous 48 heures.</p>
+                </li>
+                <li class="step">
+                    <h3 class="step__title">Le jour J</h3>
+                    <p>Je me fais discret et je suis la lumière. Pas de poses figées : des images naturelles qui vous ressemblent.</p>
+                </li>
+                <li class="step">
+                    <h3 class="step__title">La livraison</h3>
+                    <p>Vos photos retouchées dans une galerie en ligne privée, en haute définition, sous trois semaines.</p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    {{ include('components/_cta.html.twig') }}
+{% endblock %}

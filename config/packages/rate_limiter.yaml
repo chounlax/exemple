@@ -1,0 +1,12 @@
+framework:
+    rate_limiter:
+        contact_form:
+            policy: sliding_window
+            limit: 5
+            interval: '1 hour'
+
+when@test:
+    framework:
+        rate_limiter:
+            contact_form:
+                policy: no_limit

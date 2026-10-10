@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Contact et devis' %}
+{% block meta_description %}Contactez {{ site.name }}, photographe à {{ site.city }}, pour un mariage, un portrait ou un projet d'entreprise. Réponse sous 48 heures.{% endblock %}
+
+{% block body %}
+    <section class="section">
+        <div class="container contact">
+            <div class="contact__intro">
+                <p class="eyebrow">Contact</p>
+                <h1 class="page-head__title">Parlons de votre projet</h1>
+                <p class="lead">Décrivez-moi votre projet en quelques lignes : date, lieu, nombre de personnes, ce qui compte pour vous. Je vous réponds sous 48 heures.</p>
+
+                <dl class="contact__details">
+                    <div>
+                        <dt>Email</dt>
+                        <dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd>
+                    </div>
+                    <div>
+                        <dt>Téléphone</dt>
+                        <dd><a href="tel:{{ site.phone|replace({' ': ''}) }}">{{ site.phone }}</a></dd>
+                    </div>
+                    <div>
+                        <dt>Zone</dt>
+                        <dd>{{ site.area }}</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="contact__form">
+                {% for type, messages in app.flashes(['success', 'error']) %}
+                    {% for message in messages %}
+                        <p class="alert alert--{{ type }}" role="{{ type == 'error' ? 'alert' : 'status' }}">{{ message }}</p>
+                    {% endfor %}
+                {% endfor %}
+
+                {{ form_start(form, {attr: {class: 'form', novalidate: 'novalidate'}}) }}
+                    <div class="form__grid">
+                        {{ form_row(form.name, {row_attr: {class: 'field'}}) }}
+                        {{ form_row(form.email, {row_attr: {class: 'field'}}) }}
+                        {{ form_row(form.service, {row_attr: {class: 'field'}}) }}
+                        {{ form_row(form.date, {row_attr: {class: 'field'}}) }}
+                    </div>
+                    {{ form_row(form.message, {row_attr: {class: 'field'}}) }}
+                    {{ form_row(form.website) }}
+                    <p class="form__note">Vos informations servent uniquement à répondre à votre demande. <a href="{{ path('app_legal') }}#confidentialite">En savoir plus</a>.</p>
+                    <button class="button" type="submit">Envoyer ma demande</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}

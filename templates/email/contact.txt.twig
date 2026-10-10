@@ -1,0 +1,12 @@
+Nouvelle demande depuis le site
+
+Nom : {{ request.name }}
+Email : {{ request.email }}
+Prestation : {{ request.serviceLabel }}
+Date souhaitée : {{ request.date ? request.date|date('d/m/Y') : 'non précisée' }}
+
+Message :
+{{ request.message }}
+
+--
+Répondez directement à cet email pour écrire à {{ request.name }}.

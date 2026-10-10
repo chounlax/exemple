@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title gallery.title %}
+{% block meta_description %}{{ gallery.summary }} Galerie {{ gallery.title|lower }} de {{ site.name }}, photographe à {{ site.city }}.{% endblock %}
+
+{% block structured_data %}
+    <script type="application/ld+json">
+        {{ {
+            '@context': 'https://schema.org',
+            '@type': 'ImageGallery',
+            'name': gallery.title,
+            'description': gallery.description,
+            'url': url('app_gallery_show', {slug: gallery.slug}),
+            'creator': {'@type': 'Person', 'name': site.name},
+        }|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE'))|raw }}
+    </script>
+{% endblock %}
+
+{% block body %}
+    <header class="page-head">
+        <div class="container">
+            <nav class="breadcrumb" aria-label="Fil d'Ariane">
+                <ol>
+                    <li><a href="{{ path('app_home') }}">Accueil</a></li>
+                    <li><a href="{{ path('app_gallery_index') }}">Galeries</a></li>
+                    <li aria-current="page">{{ gallery.title }}</li>
+                </ol>
+            </nav>
+            <h1 class="page-head__title">{{ gallery.title }}</h1>
+            <p class="page-head__lead">{{ gallery.description }}</p>
+            <p class="page-head__meta">{{ gallery.count }} photos · cliquez sur une image pour l'agrandir</p>
+        </div>
+    </header>
+
+    <section class="section section--tight" data-controller="lightbox">
+        <div class="container">
+            <ul class="masonry">
+                {% for photo in gallery.photos %}
+                    <li class="masonry__item">
+                        <button class="masonry__button" type="button"
+                                data-lightbox-target="item"
+                                data-action="lightbox#open"
+                                data-lightbox-index-param="{{ loop.index0 }}">
+                            {{ include('components/_photo.html.twig', {photo: photo}) }}
+                            <span class="visually-hidden">Agrandir {{ photo.label|lower }}</span>
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <dialog class="lightbox" aria-label="Visionneuse {{ gallery.title }}"
+                data-lightbox-target="dialog"
+                data-action="keydown->lightbox#keydown click->lightbox#backdrop close->lightbox#restoreFocus">
+            <div class="lightbox__stage" data-lightbox-target="stage"></div>
+            <p class="lightbox__counter" data-lightbox-target="counter" aria-live="polite"></p>
+            <button class="lightbox__control lightbox__control--prev" type="button" data-action="lightbox#previous">
+                <span aria-hidden="true">‹</span><span class="visually-hidden">Photo précédente</span>
+            </button>
+            <button class="lightbox__control lightbox__control--next" type="button" data-action="lightbox#next">
+                <span aria-hidden="true">›</span><span class="visually-hidden">Photo suivante</span>
+            </button>
+            <button class="lightbox__close" type="button" data-action="lightbox#close" autofocus>
+                <span aria-hidden="true">×</span><span class="visually-hidden">Fermer</span>
+            </button>
+        </dialog>
+    </section>
+
+    {% if others is not empty %}
+        <section class="section section--alt">
+            <div class="container">
+                <div class="section__head">
+                    <h2 class="section__title">Autres galeries</h2>
+                </div>
+                <div class="cards cards--three">
+                    {% for other in others %}
+                        {{ include('components/_gallery_card.html.twig', {gallery: other, heading: 'h3'}) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    {{ include('components/_cta.html.twig') }}
+{% endblock %}

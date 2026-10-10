@@ -1,0 +1,12 @@
+{# Paramètres : gallery (App\Portfolio\Gallery), heading (balise du titre, h2 par défaut) #}
+{% set heading = heading|default('h2') %}
+<article class="card">
+    <a class="card__link" href="{{ path('app_gallery_show', {slug: gallery.slug}) }}">
+        {{ include('components/_photo.html.twig', {photo: gallery.cover, class: 'photo--cover'}) }}
+        <div class="card__body">
+            <{{ heading }} class="card__title">{{ gallery.title }}</{{ heading }}>
+            <p class="card__text">{{ gallery.summary }}</p>
+            <p class="card__meta">{{ gallery.count }} photos <span aria-hidden="true">→</span></p>
+        </div>
+    </a>
+</article>

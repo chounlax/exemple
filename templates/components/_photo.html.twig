@@ -1,0 +1,11 @@
+{#
+    Cadre de couleur qui tient la place d'une photo, aux proportions de l'image.
+    À remplacer par une vraie <img> (avec srcset, width, height, alt) quand les
+    photos seront disponibles : voir la skill galerie-photo.
+
+    Paramètres : photo (App\Portfolio\Photo), class (facultatif)
+#}
+<div class="photo {{ class|default('') }}" role="img" aria-label="{{ photo.alt }}"
+     style="--w: {{ photo.width }}; --h: {{ photo.height }}; --photo-color: {{ photo.color }};">
+    <span class="photo__label">{{ photo.label }}</span>
+</div>
